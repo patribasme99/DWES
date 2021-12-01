@@ -1,7 +1,9 @@
 package servlets;
 
+import ConversionCF.ConversionCF;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashSet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -9,12 +11,21 @@ import javax.servlet.http.HttpServletResponse;
 
 
 public class ServletConversor extends HttpServlet {
+    
+    private HashSet<String> locales;
+    
+    public void init() throws ServletException {
+        super.init();
+        locales = new HashSet<String>();
+    }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
         double cel = 0;
         double fah= 0;
+        String locale = request.getLocale().toString();
+        locales.add(locale);
         
         if(request.getParameter("cel-fah") != null) {
             String celsius = request.getParameter("celsius");
@@ -25,7 +36,8 @@ public class ServletConversor extends HttpServlet {
             } else {
                 try {
                     cel = Double.parseDouble(celsius);
-                    fah = (cel * 9 / 5) + 32;
+                    ConversionCF conversion = new ConversionCF(cel, "c");
+                    fah = conversion.getFahrenheit();
                 } catch (NumberFormatException e) {
                     dibujarError(request, response, "La temperatura debe ser numérica");
                 }
@@ -40,7 +52,8 @@ public class ServletConversor extends HttpServlet {
                 } else {
                     try {
                         fah = Double.parseDouble(fahrenheit);
-                        cel = (fah - 32) * 5 / 9;
+                        ConversionCF conversion = new ConversionCF(fah, "f");
+                        cel = conversion.getCelsius();
                     } catch (NumberFormatException e) {
                         //errorPage(request, response, "La temperatura debe ser numérica");
                     }
@@ -61,6 +74,7 @@ public class ServletConversor extends HttpServlet {
             out.println("<p><b>Valor en celsius</b>: " + cel + "</p>");
             out.println("<p><b>Valor en fahrenheit</b>: " + fah + "</p>");
             out.println("<a href='http://localhost:8080/Ejercicio1'>Enlace para volver al formulario</a>");
+            out.println("<footer>Se han establecido conexiones desde " + locales.size() + " distintos locale's</footer>");
             out.println("</body>");
             out.println("</html>");
         }
