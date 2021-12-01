@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ejercicio 1</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <form action="Ejercicio1.php" method="POST" style="border: 2px solid black">
+            <label for="textoACifrar">Texto a cifrar </label><input type="text" name="textoACifrar" required>
+            <div>
+                <label for="desplazamiento">Desplazamiento </label>
+                <input type="radio" name="desplazamiento[]" value="<?php echo $_POST['desplazamiento'];?>" required>3
+                <input type="radio" name="desplazamiento[]" value="<?php echo $_POST['desplazamiento'];?>" required>5
+                <input type="radio" name="desplazamiento[]" value="<?php echo $_POST['desplazamiento'];?>" required>10
+                <input type="submit" name="cifradoCesar" value="CIFRADO CESAR">
+            </div>
+            <div>
+                <label for="ficheroClave">Fichero de clave </label>
+                <select>
+                    <option>fichero_clave1.txt</option>
+                    <option>fichero_clave2.txt</option>
+                    <option>fichero_clave3.txt</option>
+                   </select>
+                    <button type="button">CIFRADO POR SUSTITUCION</button>
+            </div>
+        </form>
+    </body>
+</html>
